@@ -1,66 +1,47 @@
-from collections import deque 
-q = deque() 
-color =[]
-dist=[]
-
-def bfs(G,s):
-    flag = 0
-    n=len(G)
-    for i in range(0,n):
-        dist.append(0)
+from collections import deque
+q = deque()
+color = []
+dist = []
+def bpt(G,s):
+    n = len(G)
     for i in range(0,n):
         color.append("white")
+        dist.append(-1)
+    color[0] = "grey"
     dist[s] = 0
-    color[s] = "grey"
     q.append(s)
-    while len(q)!=0:
-        n=q.popleft()
-        for neighbour in G[n]:
-
-            if color[neighbour] == "white":
-                color[neighbour] = "grey"
-                q.append(neighbour)
-                dist[neighbour] = dist[n]+1
-            elif color[neighbour] == "grey" and dist[neighbour] == dist[n]:
-                flag =-1
-
-        color[n] = "black"
-    if flag == 0:
-         print("Bipartite")
-    else:
-        print("Non bipartite")
-
-
-
-
-
-
-
-
+    while(len(q)!=0):
+        u = q.popleft()
+        for v in G[u]:
+            if color[v] == "white":
+                color[v] = "grey"
+                dist[v] = dist[u] +1
+                q.append(v)
+            else:
+                if dist[v] == dist[u]:
+                    print("Not bi-partitate")
+                    exit()
+        color[u] = "black"
+    print("Bi-partitate")
 
 
 
 def main():
-    ''' Adjacency List representation. G is a list of lists. '''
-    G = [] 
-
+    G = []
     file=open('input.txt','r')
     for line in file:
-        line=line.strip()
-        adjacentVertices = []
-        first=True
+        line = line.strip()
+        adjV = []
+        first = True
         for node in line.split(' '):
             if first:
-                first=False
+                first = False
                 continue
-            adjacentVertices.append(int(node))
-        G.append(adjacentVertices)
-
+            adjV.append(int(node))
+        G.append(adjV)
     file.close()
-
     print(G)
-    bfs(G,0)
-    
+    bpt(G,0)
 
 if __name__ == '__main__':
     main()
