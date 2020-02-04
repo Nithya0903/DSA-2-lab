@@ -51,6 +51,7 @@ def main():
 
     print(G)
     s = input('Enter source node')
+    s = int(s)
     bfs(G,s)
 
 if __name__ == '__main__':
